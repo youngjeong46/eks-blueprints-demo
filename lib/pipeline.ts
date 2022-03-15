@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as ssp from '@aws-quickstart/ssp-amazon-eks';
+import { TeamPlatform, TeamApplication } from '../teams';
 
 export default class PipelineConstruct extends cdk.Construct{
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps){
@@ -9,7 +10,7 @@ export default class PipelineConstruct extends cdk.Construct{
     .account(props?.env?.account)
     .region(props?.env?.region)
     .addOns()
-    .teams();
+    .teams(new TeamPlatform(), new TeamApplication('burnham'));
   
     ssp.CodePipelineStack.builder()
       .name("blueprints-demo-pipeline")
