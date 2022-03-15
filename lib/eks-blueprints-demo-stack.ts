@@ -1,15 +1,15 @@
 import * as cdk from '@aws-cdk/core';
-// import * as sqs from '@aws-cdk/aws-sqs';
+import * as ssp from '@aws-quickstart/ssp-amazon-eks';
 
-export class EksBlueprintsDemoStack extends cdk.Stack {
+export default class ClusterConstruct extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+    super(scope, id);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'EksBlueprintsDemoQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const blueprint = ssp.EksBlueprint.builder()
+    .account(props?.env?.account)
+    .region(props?.env?.region)
+    .addOns()
+    .teams()
+    .build(scope, id+"-stack");
   }
 }
