@@ -6,6 +6,7 @@ export default class PipelineConstruct extends cdk.Construct{
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
 
+    // use Custom AMI, Instance Type, etc.
     const blueprint = blueprints.EksBlueprint.builder()
     .account(props?.env?.account)
     .region(props?.env?.region)
