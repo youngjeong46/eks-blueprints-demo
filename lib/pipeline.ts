@@ -16,19 +16,7 @@ export default class PipelineConstruct extends cdk.Construct{
             id: "mng1",
             amiType: eks.NodegroupAmiType.AL2_X86_64,
             instanceTypes: [new ec2.InstanceType('m5.2xlarge')]
-        },
-        // {
-        //     id: "mng2-custom",
-        //     instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
-        //     nodeGroupCapacityType: eks.CapacityType.SPOT,
-        //     customAmi: {
-        //       machineImage: ec2.MachineImage.genericLinux({
-        //           'us-east-1': 'ami-0b297a512e2852b89',
-        //           'us-west-2': 'ami-06a8c459c01f55c7b',
-        //           'us-east-2': 'ami-093d9796e55a5b860'
-        //       }),
-        //     }
-        // }
+        }
       ]
     });
 
@@ -38,6 +26,33 @@ export default class PipelineConstruct extends cdk.Construct{
     .region(props?.env?.region)
     .addOns()
     .teams(new TeamPlatform(), new TeamApplication('burnham'));
+
+    const repoUrl = 'https://github.com/aws-samples/ssp-eks-workloads.git'
+
+    const bootstrapRepo : blueprints.ApplicationRepository = {
+        repoUrl,
+        targetRevision: 'workshop',
+    }
+
+    // HERE WE GENERATE THE ADDON CONFIGURATIONS
+    const devBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+          ...bootstrapRepo,
+          path: 'envs/dev'
+      },
+    });
+    const testBootstrapArgo = new blueprints.ArgoCDAddOn({
+        bootstrapRepo: {
+            ...bootstrapRepo,
+            path: 'envs/test'
+        },
+    });
+    const prodBootstrapArgo = new blueprints.ArgoCDAddOn({
+        bootstrapRepo: {
+            ...bootstrapRepo,
+            path: 'envs/prod'
+        },
+    });
   
     blueprints.CodePipelineStack.builder()
       .name("blueprints-demo-pipeline")
@@ -50,9 +65,9 @@ export default class PipelineConstruct extends cdk.Construct{
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprint.clone('us-west-2')},
-          { id: "test", stackBuilder: blueprint.clone('us-east-2')},
-          { id: "prod", stackBuilder: blueprint.clone('us-east-1')}
+          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns(devBootstrapArgo)},
+          { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns(testBootstrapArgo)},
+          { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns(prodBootstrapArgo)}
         ]
       })
       .build(scope, id+'-stack', props);
