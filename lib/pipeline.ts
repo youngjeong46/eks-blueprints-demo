@@ -17,18 +17,18 @@ export default class PipelineConstruct extends cdk.Construct{
             amiType: eks.NodegroupAmiType.AL2_X86_64,
             instanceTypes: [new ec2.InstanceType('m5.2xlarge')]
         },
-        {
-            id: "mng2-custom",
-            instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
-            nodeGroupCapacityType: eks.CapacityType.SPOT,
-            customAmi: {
-              machineImage: ec2.MachineImage.genericLinux({
-                  'us-east-1': 'ami-0b297a512e2852b89',
-                  'us-west-2': 'ami-06a8c459c01f55c7b',
-                  'us-east-2': 'ami-093d9796e55a5b860'
-              }),
-            }
-        }
+        // {
+        //     id: "mng2-custom",
+        //     instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
+        //     nodeGroupCapacityType: eks.CapacityType.SPOT,
+        //     customAmi: {
+        //       machineImage: ec2.MachineImage.genericLinux({
+        //           'us-east-1': 'ami-0b297a512e2852b89',
+        //           'us-west-2': 'ami-06a8c459c01f55c7b',
+        //           'us-east-2': 'ami-093d9796e55a5b860'
+        //       }),
+        //     }
+        // }
       ]
     });
 
