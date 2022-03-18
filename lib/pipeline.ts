@@ -23,9 +23,9 @@ export default class PipelineConstruct extends cdk.Construct{
             nodeGroupCapacityType: eks.CapacityType.SPOT,
             customAmi: {
               machineImage: ec2.MachineImage.genericLinux({
-                  'us-east-1': 'ami-0e1b6f116a3733fef',
-                  'us-west-1': 'ami-0167be2eb86ccfbb6',
-                  'us-east-2': 'ami-0656dd273bd6e9a2f'
+                  'us-east-1': 'ami-0ff8a91507f77f867',
+                  'us-west-1': 'ami-0bdb828fd58c52235',
+                  'us-east-2': 'ami-0b59bfac6be064b78'
               }),
             }
         }
