@@ -31,7 +31,7 @@ export default class PipelineConstruct extends cdk.Construct{
 
     const bootstrapRepo : blueprints.ApplicationRepository = {
         repoUrl,
-        targetRevision: 'workshop',
+        targetRevision: 'demo',
     }
 
     // HERE WE GENERATE THE ADDON CONFIGURATIONS
