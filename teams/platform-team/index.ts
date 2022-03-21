@@ -6,6 +6,7 @@ export class TeamPlatform extends PlatformTeam {
         super({
             name: "platform",
             userRoleArn: "arn:aws:iam::590259161827:role/platform-team-role",
+            // users:[new ArnPrincipal("arn-user-1"), new ArnPrincipal("arn-user-2")],
         })
     }
 }
