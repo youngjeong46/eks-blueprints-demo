@@ -2,11 +2,11 @@ import { ArnPrincipal } from '@aws-cdk/aws-iam';
 import { PlatformTeam } from '@aws-quickstart/ssp-amazon-eks';
 
 export class TeamPlatform extends PlatformTeam {
-    constructor() {
+    constructor(accountID: string) {
         super({
             name: "platform",
-            userRoleArn: "arn:aws:iam::590259161827:role/platform-team-role",
-            // users:[new ArnPrincipal("arn-user-1"), new ArnPrincipal("arn-user-2")],
+            userRoleArn: `arn:aws:iam::${accountID}:role/platform-team-role`,
+            // users:[new ArnPrincipal("platform-user-1"), new ArnPrincipal("platform-user-2")],
         })
     }
 }

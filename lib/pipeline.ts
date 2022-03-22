@@ -20,12 +20,15 @@ export default class PipelineConstruct extends cdk.Construct{
       ]
     });
 
+    const account = props?.env?.account!;
+    const region = props?.env?.account!;
+
     const blueprint = blueprints.EksBlueprint.builder()
-    .account(props?.env?.account)
+    .account(account)
     .clusterProvider(clusterProvider)
-    .region(props?.env?.region)
+    .region(region)
     .addOns(new blueprints.ContainerInsightsAddOn())
-    .teams(new TeamPlatform(), new TeamApplication('burnham'), new TeamApplication('carmen'));
+    .teams(new TeamPlatform(account), new TeamApplication('burnham', account), new TeamApplication('carmen', account));
 
     const repoUrl = 'https://github.com/aws-samples/ssp-eks-workloads.git'
 
