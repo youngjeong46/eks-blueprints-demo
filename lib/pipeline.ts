@@ -13,7 +13,7 @@ export default class PipelineConstruct extends cdk.Construct{
       version: eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
         {
-            id: "mng1",
+            id: "mng-1",
             minSize: 1,
             maxSize: 5,
             desiredSize: 3,
