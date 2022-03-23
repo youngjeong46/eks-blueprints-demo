@@ -9,7 +9,6 @@ export default class PipelineConstruct extends cdk.Construct{
     super(scope,id)
 
     // Customized Cluster Provider
-    // this is a simple change.
     const clusterProvider = new blueprints.GenericClusterProvider({
       version: eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
