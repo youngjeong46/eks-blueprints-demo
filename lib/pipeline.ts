@@ -16,7 +16,7 @@ export default class PipelineConstruct extends cdk.Construct{
             id: "mng-1",
             minSize: 1,
             maxSize: 5,
-            desiredSize: 3,
+            desiredSize: 2,
             amiType: eks.NodegroupAmiType.AL2_X86_64,
             instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
             nodeGroupCapacityType: eks.CapacityType.ON_DEMAND,
