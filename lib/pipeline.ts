@@ -1,11 +1,12 @@
-import * as cdk from '@aws-cdk/core';
-import * as eks from '@aws-cdk/aws-eks';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as blueprints from '@aws-quickstart/ssp-amazon-eks';
+import * as cdk from 'aws-cdk-lib';
+import * as eks from 'aws-cdk-lib/aws-eks';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as blueprints from '@aws-quickstart/eks-blueprints';
+import { Construct } from 'constructs';
 import { TeamPlatform, TeamApplication } from '../teams';
 
-export default class PipelineConstruct extends cdk.Construct{
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps){
+export default class PipelineConstruct extends Construct{
+  constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
 
     // Customized Cluster Provider
@@ -32,7 +33,11 @@ export default class PipelineConstruct extends cdk.Construct{
     .clusterProvider(clusterProvider)
     .region(region)
     .addOns(new blueprints.ContainerInsightsAddOn())
-    .teams(new TeamPlatform(account), new TeamApplication('burnham', account), new TeamApplication('carmen', account));
+    .teams(
+      new TeamPlatform(account), 
+      new TeamApplication('burnham', account), 
+      new TeamApplication('carmen', account)
+    );
 
     const repoUrl = 'https://github.com/aws-samples/ssp-eks-workloads.git'
 

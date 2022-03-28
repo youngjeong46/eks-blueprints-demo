@@ -1,5 +1,5 @@
-import { ArnPrincipal } from '@aws-cdk/aws-iam';
-import { ApplicationTeam } from '@aws-quickstart/ssp-amazon-eks';
+import { ArnPrincipal } from 'aws-cdk-lib/aws-iam';
+import { ApplicationTeam } from '@aws-quickstart/eks-blueprints';
 
 export class TeamApplication extends ApplicationTeam {
     constructor(name: string, accountID: string) {
@@ -7,6 +7,9 @@ export class TeamApplication extends ApplicationTeam {
             name: name,
             userRoleArn: `arn:aws:iam::${accountID}:role/team-${name}-role`,
             // users:[new ArnPrincipal("app-team-user-1"), new ArnPrincipal("app-team-user-2")],
+            namespaceHardLimits: {
+                
+            }
         });
     }
 }

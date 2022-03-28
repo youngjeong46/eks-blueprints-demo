@@ -1,4 +1,4 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import PipelineConstruct from '../lib/pipeline'; // IMPORT OUR PIPELINE CONSTRUCT
 
 
