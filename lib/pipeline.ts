@@ -31,15 +31,6 @@ export default class PipelineConstruct extends Construct{
           ],
           nodeGroupCapacityType: eks.CapacityType.SPOT,
         }
-      ],
-      autoscalingNodeGroups: [
-        {
-          id: "self-1", 
-          minSize: 1,
-          maxSize: 3,
-          desiredSize: 2,
-          instanceType: new ec2.InstanceType('t2.xlarge'),
-        }
       ]
     });
 
