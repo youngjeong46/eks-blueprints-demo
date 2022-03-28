@@ -14,13 +14,31 @@ export default class PipelineConstruct extends Construct{
       version: eks.KubernetesVersion.V1_21,
       managedNodeGroups: [
         {
-            id: "mng-1",
-            minSize: 1,
-            maxSize: 5,
-            desiredSize: 2,
-            amiType: eks.NodegroupAmiType.AL2_X86_64,
-            instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
-            nodeGroupCapacityType: eks.CapacityType.ON_DEMAND,
+          id: "mng-1",
+          minSize: 1,
+          maxSize: 5,
+          desiredSize: 2,
+          amiType: eks.NodegroupAmiType.AL2_X86_64,
+          instanceTypes: [new ec2.InstanceType('m5.2xlarge')],
+          nodeGroupCapacityType: eks.CapacityType.ON_DEMAND,
+        },
+        {
+          id: "spot-1",
+          instanceTypes: [
+            new ec2.InstanceType('t2.xlarge'),
+            new ec2.InstanceType('t3.xlarge'),
+            new ec2.InstanceType('t3.small'),
+          ],
+          nodeGroupCapacityType: eks.CapacityType.SPOT,
+        }
+      ],
+      autoscalingNodeGroups: [
+        {
+          id: "self-1", 
+          minSize: 1,
+          maxSize: 3,
+          desiredSize: 2,
+          instanceType: new ec2.InstanceType('t2.xlarge'),
         }
       ]
     });
