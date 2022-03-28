@@ -9,6 +9,9 @@ export default class PipelineConstruct extends Construct{
   constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
 
+    const account = props?.env?.account!;
+    const region = props?.env?.account!;
+
     // Customized Cluster Provider
     const clusterProvider = new blueprints.GenericClusterProvider({
       version: eks.KubernetesVersion.V1_21,
@@ -34,9 +37,7 @@ export default class PipelineConstruct extends Construct{
       ]
     });
 
-    const account = props?.env?.account!;
-    const region = props?.env?.account!;
-
+    // Blueprint definition
     const blueprint = blueprints.EksBlueprint.builder()
     .account(account)
     .clusterProvider(clusterProvider)
@@ -48,6 +49,7 @@ export default class PipelineConstruct extends Construct{
       new TeamApplication('carmen', account)
     );
 
+    // ArgoCD Workload Configurations
     const repoUrl = 'https://github.com/aws-samples/ssp-eks-workloads.git'
 
     const bootstrapRepo : blueprints.ApplicationRepository = {
@@ -55,7 +57,7 @@ export default class PipelineConstruct extends Construct{
         targetRevision: 'demo',
     }
 
-    // HERE WE GENERATE THE ADDON CONFIGURATIONS
+    // Env ArgoCD Addon Configurations
     const devBootstrapArgo = new blueprints.ArgoCDAddOn({
       bootstrapRepo: {
           ...bootstrapRepo,
@@ -74,7 +76,8 @@ export default class PipelineConstruct extends Construct{
             path: 'envs/prod'
         },
     });
-  
+    
+    // Blueprints pipeline
     blueprints.CodePipelineStack.builder()
       .name("blueprints-demo-pipeline")
       .owner("youngjeong46")
