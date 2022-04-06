@@ -2,6 +2,8 @@ import * as cdk from 'aws-cdk-lib';
 import * as eks from 'aws-cdk-lib/aws-eks';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as blueprints from '@aws-quickstart/eks-blueprints';
+import { NewRelicAddOn } from '@newrelic/newrelic-eks-blueprints-addon';
+
 import { Construct } from 'constructs';
 import { TeamPlatform, TeamApplication } from '../teams';
 
@@ -35,6 +37,15 @@ export default class PipelineConstruct extends Construct{
           nodeGroupCapacityType: eks.CapacityType.SPOT,
         }
       ]
+    });
+
+    // Partner Addon example
+    const newRelicAddOn = new NewRelicAddOn({
+      version: "4.2.0-beta",
+      newRelicClusterName: "eks-blueprint-demo",
+      awsSecretName: "newRelicSecret",
+      installPixie: true,
+      installPixieIntegration: true,
     });
 
     // Blueprint definition
@@ -89,7 +100,7 @@ export default class PipelineConstruct extends Construct{
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns(devBootstrapArgo)},
+          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns(devBootstrapArgo, newRelicAddOn)},
           { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns(testBootstrapArgo)},
           { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns(prodBootstrapArgo)}
         ]
