@@ -53,7 +53,10 @@ export default class PipelineConstruct extends Construct{
     .account(account)
     .clusterProvider(clusterProvider)
     .region(region)
-    .addOns(new blueprints.ContainerInsightsAddOn())
+    .addOns(
+      new blueprints.ContainerInsightsAddOn(),
+      new blueprints.SecretsStoreAddOn(),
+    )
     .teams(
       new TeamPlatform(account), 
       new TeamApplication('burnham', account), 
