@@ -11,6 +11,7 @@ This is a node/typescript project with demo for EKS Blueprints. The repo contain
 1. aws-cdk v2.17.0.
 2. `kubectl` for CLI access to your EKS clusters.
 3. You must have your GitHub token stored as a secret named `github-token` on AWS Secrets Manager in the following regions: us-east-1, us-east-2 and us-west-2. (Create in one region and replicate to the rest).
+4. There needs to be three IAM Roles generated in your AWS account - `team-burnham-role`, `team-carmen-role` and `platform-team-role`. They don't need to have any policies attached, but be sure to have a trust policy that allows you to assume those roles using other entities.
   
 ## How to deploy
 
