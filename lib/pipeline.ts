@@ -64,7 +64,7 @@ export default class PipelineConstruct extends Construct{
     );
 
     // ArgoCD Workload Configurations
-    const repoUrl = 'https://github.com/aws-samples/ssp-eks-workloads.git'
+    const repoUrl = 'https://github.com/aws-samples/eks-blueprints-workloads.git'
 
     const bootstrapRepo : blueprints.ApplicationRepository = {
         repoUrl,
