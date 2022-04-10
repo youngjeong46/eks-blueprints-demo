@@ -5,6 +5,8 @@ import { Construct } from 'constructs';
 
 import * as blueprints from '@aws-quickstart/eks-blueprints';
 
+import * as teams from '../teams';
+
 export default class PipelineConstruct extends Construct{
   constructor(scope: Construct, id: string, props?: cdk.StackProps){
     super(scope,id)
@@ -43,7 +45,11 @@ export default class PipelineConstruct extends Construct{
     .clusterProvider(clusterProvider)
     .region(region)
     .addOns()
-    .teams();
+    .teams(
+      new teams.TeamPlatform(account), 
+      new teams.TeamApplication('carmen',account),
+      new teams.TeamApplication('burnham', account)
+    );
     
     // Blueprints pipeline
     blueprints.CodePipelineStack.builder()
@@ -57,9 +63,9 @@ export default class PipelineConstruct extends Construct{
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns()},
+          { id: "dev", stackBuilder: blueprint.clone('us-east-1').addOns()},
           { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns()},
-          { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns()}
+          { id: "prod", stackBuilder: blueprint.clone('us-west-2').addOns()}
         ]
       })
       .build(scope, id+'-stack', props);
