@@ -50,6 +50,34 @@ export default class PipelineConstruct extends Construct{
       new teams.TeamApplication('carmen', account),
       new teams.TeamApplication('burnham', account)
     );
+
+    const repoUrl = 'https://github.com/aws-samples/eks-blueprints-workloads';
+
+    const bootstrapRepo: blueprints.ApplicationRepository = {
+      repoUrl,
+      targetRevision: 'demo',
+    }
+
+    const devBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+        ...bootstrapRepo,
+        path: 'envs/dev',
+      }
+    });
+
+    const testBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+        ...bootstrapRepo,
+        path: 'envs/test',
+      }
+    });
+
+    const prodBootstrapArgo = new blueprints.ArgoCDAddOn({
+      bootstrapRepo: {
+        ...bootstrapRepo,
+        path: 'envs/prod',
+      }
+    });
     
     // Blueprints pipeline
     blueprints.CodePipelineStack.builder()
@@ -63,9 +91,9 @@ export default class PipelineConstruct extends Construct{
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns()},
-          { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns()},
-          { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns()}
+          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns(devBootstrapArgo)},
+          { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns(testBootstrapArgo)},
+          { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns(prodBootstrapArgo)}
         ]
       })
       .build(scope, id+'-stack', props);
