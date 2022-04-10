@@ -47,7 +47,7 @@ export default class PipelineConstruct extends Construct{
     .addOns()
     .teams(
       new teams.TeamPlatform(account), 
-      new teams.TeamApplication('carmen',account),
+      new teams.TeamApplication('carmen', account),
       new teams.TeamApplication('burnham', account)
     );
     
@@ -63,9 +63,9 @@ export default class PipelineConstruct extends Construct{
       .wave({
         id: "envs",
         stages: [
-          { id: "dev", stackBuilder: blueprint.clone('us-east-1').addOns()},
+          { id: "dev", stackBuilder: blueprint.clone('us-west-2').addOns()},
           { id: "test", stackBuilder: blueprint.clone('us-east-2').addOns()},
-          { id: "prod", stackBuilder: blueprint.clone('us-west-2').addOns()}
+          { id: "prod", stackBuilder: blueprint.clone('us-east-1').addOns()}
         ]
       })
       .build(scope, id+'-stack', props);
